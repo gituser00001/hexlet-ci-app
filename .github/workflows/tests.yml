@@ -1,0 +1,19 @@
+name: hexlet-ci-app tests
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: 377b13a3-5e72-469a-a0d3-c46468dd3144
+        continue-on-error: true
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+      - run: make setup
+      - run: make test
+      - run: make lint
